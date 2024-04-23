@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Cat
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Create your views here.
 #temporary database - remove this after adding cat model
@@ -26,3 +27,18 @@ def cats_detail(request, cat_id):
     return render(request, 'cats/detail.html', {
         'cat': cat
     })
+
+class CatCreate(CreateView):
+    model = Cat
+    fields = '__all__'
+    success_url = '/cats/{id}'
+
+class CatUpdate(UpdateView):
+  model = Cat
+  # Let's disallow the renaming of a cat by excluding the name field!
+  fields = ('description', 'age')
+  success_url = '/cats/{id}'
+
+class CatDelete(DeleteView):
+  model = Cat
+  success_url = '/cats'
